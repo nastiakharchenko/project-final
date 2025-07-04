@@ -7,12 +7,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      # Credentials
       POSTGRES_USER: jira
       POSTGRES_PASSWORD: JiraRush
-      # (Optional) set a subdirectory for the database files
-      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      # Persist data on the host
-      - ./pgdata:/var/lib/postgresql/data
+      - db-data:/var/lib/postgresql/data
     restart: unless-stopped
+
+volumes:
+  db-data:
