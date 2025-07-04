@@ -1,30 +1,22 @@
 ---------  users ----------------------
-delete
-from USER_ROLE;
-delete
-from CONTACT;
-delete
-from PROFILE;
+TRUNCATE TABLE USER_ROLE;
+TRUNCATE TABLE CONTACT;
+TRUNCATE TABLE PROFILE;
 
-delete
-from ACTIVITY;
+TRUNCATE TABLE ACTIVITY;
 alter
 sequence ACTIVITY_ID_SEQ restart with 1;
-delete
-from TASK;
+TRUNCATE TABLE TASK;
 alter
 sequence TASK_ID_SEQ restart with 1;
-delete
-from SPRINT;
+TRUNCATE TABLE SPRINT;
 alter
 sequence SPRINT_ID_SEQ restart with 1;
-delete
-from PROJECT;
+TRUNCATE TABLE PROJECT;
 alter
 sequence PROJECT_ID_SEQ restart with 1;
 
-delete
-from USERS;
+TRUNCATE TABLE USERS;
 alter
 sequence USERS_ID_SEQ restart with 1;
 
