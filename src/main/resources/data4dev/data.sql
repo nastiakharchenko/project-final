@@ -1,6 +1,5 @@
 -- populate users
-DELETE
-FROM USERS;
+TRUNCATE TABLE USERS;
 alter
 sequence USERS_ID_SEQ restart with 1;
 insert into USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
@@ -24,8 +23,7 @@ values ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'us
 -- 0 DEV
 -- 1 ADMIN
 -- 2 MANAGER
-DELETE
-FROM USER_ROLE;
+TRUNCATE TABLE USER_ROLE;
 insert into USER_ROLE (USER_ID, ROLE)
 values (1, 0),
        (2, 0),
@@ -57,8 +55,7 @@ values (1, 'skype', 'userSkype'),
        (2, 'tg', 'adminTg'),
        (2, 'vk', 'adminVk');
 
-delete
-from ATTACHMENT;
+TRUNCATE TABLE ATTACHMENT;
 alter
 sequence ATTACHMENT_ID_SEQ restart with 1;
 insert into ATTACHMENT (name, file_link, object_id, object_type, user_id, date_time)
@@ -75,20 +72,16 @@ sequence ATTACHMENT_ID_SEQ restart with 1000;
 
 
 -- populate tasks
-delete
-from TASK;
+TRUNCATE TABLE TASK;
 alter
 sequence TASK_ID_SEQ restart with 1;
-delete
-from SPRINT;
+TRUNCATE TABLE SPRINT;
 alter
 sequence SPRINT_ID_SEQ restart with 1;
-delete
-from PROJECT;
+TRUNCATE TABLE PROJECT;
 alter
 sequence PROJECT_ID_SEQ restart with 1;
-delete
-from ACTIVITY;
+TRUNCATE TABLE ACTIVITY;
 alter
 sequence ACTIVITY_ID_SEQ restart with 1;
 
