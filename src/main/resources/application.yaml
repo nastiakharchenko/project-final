@@ -1,6 +1,6 @@
 app:
-  host-url: ${APP_HOST_URL:http://localhost:8080}
-  test-mail: ${APP_TEST_MAIL:jira4jr@gmail.com}
+  host-url: ${APP_HOST_URL}
+  test-mail: ${APP_TEST_MAIL}
   templates-update-cache: 5s
   mail-sending-props:
     core-pool-size: 8
@@ -22,9 +22,9 @@ spring:
         jdbc.batch_size: 20
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/jira}
-    username: ${DB_USERNAME:jira}
-    password: ${DB_PASSWORD:JiraRush}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   liquibase:
     changeLog: "classpath:db/changelog.sql"
