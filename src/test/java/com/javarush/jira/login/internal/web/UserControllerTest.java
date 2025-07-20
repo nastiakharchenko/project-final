@@ -5,10 +5,12 @@ import com.javarush.jira.login.User;
 import com.javarush.jira.login.UserTo;
 import com.javarush.jira.login.internal.UserMapper;
 import com.javarush.jira.login.internal.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserControllerTest extends AbstractControllerTest {
 
     @Autowired
@@ -59,9 +62,11 @@ class UserControllerTest extends AbstractControllerTest {
     @Test
     void createWithLocation() throws Exception {
         UserTo newTo = mapper.toTo(getNew());
+
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newTo, newTo.getPassword())))
+                .andDo(print())
                 .andExpect(status().isCreated());
 
         User created = USER_MATCHER.readFromJson(action);
