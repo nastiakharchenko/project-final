@@ -162,6 +162,7 @@ create table USER_BELONG
     constraint FK_USER_BELONG foreign key (USER_ID) references USERS (ID) on delete cascade,
     constraint UK_USER_BELONG unique(OBJECT_ID, OBJECT_TYPE, USER_ID, USER_TYPE_CODE)
 );
+
 create index IX_USER_BELONG_USER_ID on USER_BELONG (USER_ID);
 
 create table ATTACHMENT
@@ -240,6 +241,7 @@ values ('assigned', 'Assigned', 6, '1'),
        ('test', 'Test', 3, 'done,in_progress,canceled|task_tester'),
        ('done', 'Done', 3, 'canceled|'),
        ('canceled', 'Canceled', 3, null);
+
 create table CONTACT
 (
     ID    bigint       not null,
@@ -248,3 +250,8 @@ create table CONTACT
     primary key (ID, CODE),
     constraint FK_CONTACT_PROFILE foreign key (ID) references PROFILE (ID) on delete cascade
 );
+
+insert into ACTIVITY (AUTHOR_ID, TASK_ID, UPDATED, STATUS_CODE)
+values (7, 1, '2025-07-20 04:10:15.000000', 'in_progress'),
+       (7, 1, '2023-07-20 04:11:10.000000', 'ready_for_review'),
+       (7, 1, '2023-07-20 05:15:15.000000', 'done');

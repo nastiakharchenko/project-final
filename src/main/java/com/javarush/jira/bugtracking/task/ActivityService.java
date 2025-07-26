@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.javarush.jira.bugtracking.task.TaskUtil.getLatestValue;
@@ -18,6 +20,10 @@ public class ActivityService {
     private final TaskRepository taskRepository;
 
     private final Handlers.ActivityHandler handler;
+
+    public static final String IN_PROGRESS = "in_progress";
+    public static final String READY_FOR_REVIEW = "ready_for_review";
+    public static final String DONE = "done";
 
     private static void checkBelong(HasAuthorId activity) {
         if (activity.getAuthorId() != AuthUser.authId()) {
@@ -72,5 +78,45 @@ public class ActivityService {
                 task.setTypeCode(latestType);
             }
         }
+    }
+
+    public Duration progressTaskDuration(Task task) {
+        List<Activity> activities = handler.getRepository().findAllByTaskIdOrderByUpdatedDesc(task.id());
+
+        LocalDateTime inProgressTime = null;
+        LocalDateTime readyForReviewTime = null;
+
+        for (int i = activities.size() - 1; i >= 0; i--) {
+            Activity activity = activities.get(i);
+            if (IN_PROGRESS.equals(activity.getStatusCode()) && inProgressTime == null) {
+                inProgressTime = activity.getUpdated();
+            }
+            if (READY_FOR_REVIEW.equals(activity.getStatusCode()) && readyForReviewTime == null) {
+                readyForReviewTime = activity.getUpdated();
+            }
+        }
+
+        if (inProgressTime == null || readyForReviewTime == null) return Duration.ZERO;
+        return Duration.between(inProgressTime, readyForReviewTime);
+    }
+
+    public Duration testingTaskDuration(Task task) {
+        List<Activity> activities = handler.getRepository().findAllByTaskIdOrderByUpdatedDesc(task.id());
+
+        LocalDateTime doneTime = null;
+        LocalDateTime readyForReviewTime = null;
+
+        for (int i = activities.size() - 1; i >= 0; i--) {
+            Activity activity = activities.get(i);
+            if (READY_FOR_REVIEW.equals(activity.getStatusCode()) && readyForReviewTime == null) {
+                readyForReviewTime = activity.getUpdated();
+            }
+            if (DONE.equals(activity.getStatusCode()) && doneTime == null) {
+                doneTime = activity.getUpdated();
+            }
+        }
+
+        if (doneTime == null || readyForReviewTime == null) return Duration.ZERO;
+        return Duration.between(readyForReviewTime, doneTime);
     }
 }
